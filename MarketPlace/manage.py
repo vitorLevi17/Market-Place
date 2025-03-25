@@ -3,6 +3,11 @@
 import os
 import sys
 
+#1- listar produtos (filtros)
+#2- carregar as imgs
+#3- usuarios(autenticação,email, zap e endereço de entrega)
+#4- api pix / cartão
+#5- finalizar compra
 
 def main():
     """Run administrative tasks."""
