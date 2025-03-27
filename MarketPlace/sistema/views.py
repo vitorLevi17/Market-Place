@@ -14,7 +14,7 @@ def index(request):
     return render(request,'index.html',{'context':resposta_json})
 
 def teste(request):
-    url = 'http://127.0.0.1:5000/Produto/8/'
+    url = 'http://127.0.0.1:5000/Produto/10/'
     token = os.getenv('TOKEN')
 
     resposta = requests.get(url)
