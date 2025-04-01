@@ -1,6 +1,8 @@
 import os
-
-from django.shortcuts import render
+from django.contrib.auth.models import User
+from .models import Usuarios
+from django.contrib import auth
+from django.shortcuts import render,redirect
 import requests
 from .forms import LoginForm
 from dotenv import load_dotenv
@@ -38,7 +40,7 @@ def teste(request):
 
     return render(request,'teste.html',{'resposta':resposta.json()})
 
-def testef(request):
+def entrar(request):
     login = LoginForm()
 
     if request.method == 'POST':
@@ -47,8 +49,24 @@ def testef(request):
         if login.is_valid():
             email_login = login.cleaned_data["email"]
             senha_login = login.cleaned_data["senha"]
-            print(email_login , senha_login)
+            print(email_login,senha_login)
+            usuario_credencias = User.objects.get(email = email_login)
+
+            user = auth.authenticate(
+                request,
+                username = usuario_credencias.username,
+                password = senha_login
+            )
+            print(user)
+            if user != None:
+                auth.login(request,user)
+                if Usuarios.objects.filter(usuario = user).exists():
+                    print("Deu certo pae")
+                    return redirect('index')
+                else:
+                    print("Usuario não encontrado")
         else:
-            print("Insira email e senha")
-    return render(request,'testef.html',{'login':login})
+            print("Formulario invalido")
+
+    return render(request,'entrar.html',{'login':login})
 
