@@ -1,7 +1,6 @@
 import os
 from django.contrib.auth.models import User
-from .models import Usuarios
-from django.contrib import auth
+from django.contrib import auth,messages
 from django.shortcuts import render,redirect
 import requests
 from .forms import LoginForm
@@ -14,7 +13,6 @@ def index(request):
     resposta_json = resposta.json()
     #'http://127.0.0.1:8000/Produto/?search=Book 2'
     return render(request,'index.html',{'context':resposta_json})
-
 def teste(request):
     url = 'http://127.0.0.1:5000/Produto/10/'
     token = os.getenv('TOKEN')
@@ -39,34 +37,30 @@ def teste(request):
         print("Tudo certo na Bahia")
 
     return render(request,'teste.html',{'resposta':resposta.json()})
-
 def entrar(request):
     login = LoginForm()
 
     if request.method == 'POST':
         login = LoginForm(request.POST)
-
         if login.is_valid():
             email_login = login.cleaned_data["email"]
             senha_login = login.cleaned_data["senha"]
-            print(email_login,senha_login)
-            usuario_credencias = User.objects.get(email = email_login)
 
-            user = auth.authenticate(
-                request,
-                username = usuario_credencias.username,
-                password = senha_login
-            )
-            print(user)
-            if user != None:
-                auth.login(request,user)
-                if Usuarios.objects.filter(usuario = user).exists():
-                    print("Deu certo pae")
+            if(User.objects.filter(email = email_login)):
+                usuario_credencias = User.objects.get(email=email_login)
+                user = auth.authenticate(
+                    request,
+                    username = usuario_credencias.username,
+                    password = senha_login
+                )
+                if user != None:
+                    auth.login(request,user)
                     return redirect('index')
                 else:
-                    print("Usuario não encontrado")
+                    messages.error(request,"Usuario ou senha incorretos")
+                    return redirect('entrar')
+            else:
+                messages.error(request,"Email não encontrado")
         else:
-            print("Formulario invalido")
-
+            messages.error(request,"Email invalido")
     return render(request,'entrar.html',{'login':login})
-
