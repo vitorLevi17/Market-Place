@@ -5,6 +5,7 @@ from django.shortcuts import render,redirect
 import requests
 from .forms import LoginForm,UsuarioForm
 from dotenv import load_dotenv
+from validate_docbr import CPF
 
 
 load_dotenv()
@@ -68,6 +69,7 @@ def entrar(request):
 
 def cadastro(request):
     form = UsuarioForm()
+    cpfvalidador = CPF()
 
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
@@ -85,8 +87,14 @@ def cadastro(request):
 
         #validações
         if senha1 != senha:
-            messages.error(request, "As senhas não coincidem")
+            messages.error(request, "As senhas não coincidem ")
             return redirect('cadastro')
+
+        if cpfvalidador.validate(cpf) == False:
+            messages.error(request, "CPF inválido ")
+            return redirect('cadastro')
+
+
 
 
 
