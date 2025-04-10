@@ -3,7 +3,7 @@
 import os
 import sys
 
-#3- usuarios(criação,autenticação,email, zap e endereço de entrega)
+#3- usuarios(criação,esqueceu a senha,email, zap e endereço de entrega)
 #1- listar produtos (filtros)
 #2- carregar as imgs
 #4- api pix / cartão

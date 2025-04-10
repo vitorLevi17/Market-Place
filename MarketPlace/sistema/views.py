@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib import auth,messages
 from django.shortcuts import render,redirect
 import requests
-from .forms import LoginForm
+from .forms import LoginForm,UsuarioForm
 from dotenv import load_dotenv
+
 
 load_dotenv()
 def index(request):
@@ -64,3 +65,37 @@ def entrar(request):
         else:
             messages.error(request,"Email invalido")
     return render(request,'entrar.html',{'login':login})
+
+def cadastro(request):
+    form = UsuarioForm()
+
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+
+        username = form["username"].value()
+        nome = form["nome"].value()
+        sobrenome = form["sobrenome"].value()
+        email = form["email"].value()
+        senha = form["senha"].value()
+        senha1 = form["senha1"].value()
+        cpf = form["cpf"].value()
+        cep = form["cep"].value()
+        complemento = form["complemento"].value()
+        telefone = form["telefone"].value()
+
+        #validações
+        if senha1 != senha:
+            messages.error(request, "As senhas não coincidem")
+            return redirect('cadastro')
+
+
+
+
+        if form.is_valid():
+            print(username, nome, sobrenome, email, senha, senha1, cpf, cep, telefone, complemento)
+            print("Tudo certo")
+        else:
+            print("Ta errado ai mao")
+
+    return render(request,'cadastro.html',{'form':form})
+

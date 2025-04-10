@@ -20,11 +20,10 @@ class LoginForm(forms.Form):
         )
     )
 
-class UsuarioForm(forms.ModelForm):
+class UsuarioForm(forms.Form):
     username = forms.CharField(
         label="Username",
         required=True,
-        max_length=100,
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Ex. Doador Oliveira"
@@ -34,7 +33,6 @@ class UsuarioForm(forms.ModelForm):
     nome = forms.CharField(
         label="Nome",
         required=True,
-        max_length=100,
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Ex. Doador"
@@ -44,7 +42,6 @@ class UsuarioForm(forms.ModelForm):
     sobrenome = forms.CharField(
         label="Sobrenome",
         required=True,
-        max_length=100,
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Ex. Oliveira"
@@ -54,7 +51,6 @@ class UsuarioForm(forms.ModelForm):
     email = forms.EmailField(
         label="Email",
         required=True,
-        max_length=255,
         widget=forms.EmailInput(
             attrs={
                 "placeholder": "Ex. Doador.Oliveira@gmail.com"
@@ -84,7 +80,7 @@ class UsuarioForm(forms.ModelForm):
     cep = forms.CharField(
         label="Cep",
         required=True,
-        max_length=7,
+        max_length=8,
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Ex. 0011122"
@@ -94,7 +90,6 @@ class UsuarioForm(forms.ModelForm):
     complemento = forms.CharField(
         label="Complemento",
         required=True,
-        max_length=255,
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Ex. Do lado do bar do zé"
@@ -104,7 +99,6 @@ class UsuarioForm(forms.ModelForm):
     senha = forms.CharField(
         label="Senha",
         required=True,
-        max_length=255,
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "Ex. Insira sua senha"
@@ -114,7 +108,6 @@ class UsuarioForm(forms.ModelForm):
     senha1 = forms.CharField(
         label="SenhaC",
         required=True,
-        max_length=255,
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "Ex. Confirme a senha"

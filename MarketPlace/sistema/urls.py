@@ -1,9 +1,9 @@
-from django.urls import path, include
-from .views import index, teste,entrar
+from django.urls import path
+from .views import index, teste,entrar,cadastro
 
 urlpatterns = [
     path('',index,name='index'),
     path('teste/',teste,name='teste'),
     path('entrar/',entrar,name='entrar'),
-    path('email/',include('email_app.urls'))
+    path('cadastro/',cadastro,name='cadastro'),
 ]
