@@ -6,8 +6,7 @@ import requests
 from .forms import LoginForm,UsuarioForm
 from dotenv import load_dotenv
 from validate_docbr import CPF
-
-
+from .validators import valida_cep
 load_dotenv()
 def index(request):
     url = 'http://127.0.0.1:5000/Produto/'
@@ -74,16 +73,16 @@ def cadastro(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
 
-        username = form["username"].value()
-        nome = form["nome"].value()
-        sobrenome = form["sobrenome"].value()
+        username = form["username"].value() #
+        nome = form["nome"].value()#
+        sobrenome = form["sobrenome"].value()#
         email = form["email"].value()
         senha = form["senha"].value()
         senha1 = form["senha1"].value()
         cpf = form["cpf"].value()
-        cep = form["cep"].value()
+        cep = form["cep"].value()#
         complemento = form["complemento"].value()
-        telefone = form["telefone"].value()
+        telefone = form["telefone"].value()#
 
         #validações
         if senha1 != senha:
@@ -94,16 +93,21 @@ def cadastro(request):
             messages.error(request, "CPF inválido ")
             return redirect('cadastro')
 
-
-
-
+        if not valida_cep(cep):
+            messages.error(request, "CEP inválido")
+            return redirect('cadastro')
 
 
         if form.is_valid():
             print(username, nome, sobrenome, email, senha, senha1, cpf, cep, telefone, complemento)
             print("Tudo certo")
         else:
-            print("Ta errado ai mao")
+            messages.error(request, "Email inválido ")
+            return redirect('cadastro')
 
     return render(request,'cadastro.html',{'form':form})
 
+# def logout(request):
+#     auth.logout(request)
+#     messages.success(request,"Logout feito")
+#     return redirect('login')
