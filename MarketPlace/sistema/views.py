@@ -7,6 +7,7 @@ from .forms import LoginForm,UsuarioForm
 from dotenv import load_dotenv
 from validate_docbr import CPF
 from .validators import valida_cep
+import re
 load_dotenv()
 def index(request):
     url = 'http://127.0.0.1:5000/Produto/'
@@ -88,7 +89,7 @@ def cadastro(request):
         cpf = form["cpf"].value()
         cep = form["cep"].value()
         complemento = form["complemento"].value()
-        telefone = form["telefone"].value()#
+        telefone = form["telefone"].value()
 
         #validações
         if senha1 != senha:
@@ -101,6 +102,10 @@ def cadastro(request):
 
         if not valida_cep(cep):
             messages.error(request, "CEP inválido")
+            return redirect('cadastro')
+
+        if not re.fullmatch(r"^\d{11}$", telefone):
+            messages.error(request, "Número de telefone inválido, use somente números")
             return redirect('cadastro')
 
 
