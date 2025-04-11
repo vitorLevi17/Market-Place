@@ -10,15 +10,24 @@ from .validators import valida_cep
 load_dotenv()
 def index(request):
     url = 'http://127.0.0.1:5000/Produto/'
-    resposta = requests.get(url)
+    token = os.getenv('TOKEN')
+    headers = {
+        'Authorization': f'Token {token}',
+        'Content-Type': 'application/json'
+    }
+    resposta = requests.get(url,headers=headers)
     resposta_json = resposta.json()
     #'http://127.0.0.1:8000/Produto/?search=Book 2'
     return render(request,'index.html',{'context':resposta_json})
 def teste(request):
-    url = 'http://127.0.0.1:5000/Produto/10/'
+    url = 'http://127.0.0.1:5000/Produto/15/'
     token = os.getenv('TOKEN')
+    headers = {
+        'Authorization': f'Token {token}',
+        'Content-Type': 'application/json'
+    }
 
-    resposta = requests.get(url)
+    resposta = requests.get(url,headers=headers)
 
     data = resposta.json()
     preco = data.get('preco',0)
@@ -29,10 +38,7 @@ def teste(request):
         'preco': preco,
         'quantidade': nova_quantidade
     }
-    headers = {
-        'Authorization': f'Token {token}',
-        'Content-Type': 'application/json'
-    }
+
     resposta = requests.patch(url,json=request_patch,headers=headers)
     if resposta.status_code == 200:
         print("Tudo certo na Bahia")
@@ -80,7 +86,7 @@ def cadastro(request):
         senha = form["senha"].value()
         senha1 = form["senha1"].value()
         cpf = form["cpf"].value()
-        cep = form["cep"].value()#
+        cep = form["cep"].value()
         complemento = form["complemento"].value()
         telefone = form["telefone"].value()#
 
@@ -107,7 +113,7 @@ def cadastro(request):
 
     return render(request,'cadastro.html',{'form':form})
 
-# def logout(request):
-#     auth.logout(request)
-#     messages.success(request,"Logout feito")
-#     return redirect('login')
+def logout(request):
+    auth.logout(request)
+    messages.success(request,"Logout feito")
+    return redirect('entrar')
