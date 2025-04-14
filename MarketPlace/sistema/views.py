@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from validate_docbr import CPF
 from .validators import valida_cep
 import re
+from .models import Usuarios
 load_dotenv()
 def index(request):
     url = 'http://127.0.0.1:5000/Produto/'
@@ -88,7 +89,7 @@ def cadastro(request):
         senha1 = form["senha1"].value()
         cpf = form["cpf"].value()
         cep = form["cep"].value()
-        complemento = form["complemento"].value()
+        complemento = form["complemento"].value()#
         telefone = form["telefone"].value()
 
         #validações
@@ -96,7 +97,7 @@ def cadastro(request):
             messages.error(request, "As senhas não coincidem ")
             return redirect('cadastro')
 
-        if cpfvalidador.validate(cpf) == False:
+        if cpfvalidador.validate(cpf) == False or Usuarios.objects.filter(cpf=cpf).exists():
             messages.error(request, "CPF inválido ")
             return redirect('cadastro')
 
@@ -104,14 +105,28 @@ def cadastro(request):
             messages.error(request, "CEP inválido")
             return redirect('cadastro')
 
-        if not re.fullmatch(r"^\d{11}$", telefone):
-            messages.error(request, "Número de telefone inválido, use somente números")
+        if not re.fullmatch(r"^\d{11}$", telefone) or Usuarios.objects.filter(telefone=telefone).exists():
+            messages.error(request, "Número de telefone inválido")
             return redirect('cadastro')
 
-
-        if form.is_valid():
-            print(username, nome, sobrenome, email, senha, senha1, cpf, cep, telefone, complemento)
-            print("Tudo certo")
+        if form.is_valid() and not User.objects.filter(email=email).exists():
+            usuario = User.objects.create_user(
+                username=username,
+                first_name = nome,
+                last_name = sobrenome,
+                email=email,
+                password=senha1
+            )
+            usuario.save()
+            resto_usuario = Usuarios.objects.create(
+                usuario = usuario,
+                cpf = cpf,
+                telefone = telefone,
+                cep = cep,
+                complemento = complemento
+            )
+            resto_usuario.save()
+            return redirect('index')
         else:
             messages.error(request, "Email inválido ")
             return redirect('cadastro')
