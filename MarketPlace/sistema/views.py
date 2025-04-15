@@ -147,11 +147,11 @@ def receber_email(request):
         print(id_usuario,email)
         # enviar email para usuario
         # Passar endereço de email no parametro para metodo de envio de email
-        messages.success(request,'Tudo certo')
+        messages.success(request,'Verifique seu email para finalizar a alteração da senha')
         return redirect('index')
     else:
         messages.success(request, 'Tudo errado')
-    return render(request,'rec_senha.html',{'form':form})
+    return render(request,'receber_email.html',{'form':form})
 
 def mudar_senha(request,id):
     form = MudarSenhaForm(request.POST)

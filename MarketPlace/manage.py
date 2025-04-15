@@ -3,7 +3,7 @@
 import os
 import sys
 
-#3- usuarios(esqueceu a senha,email)
+#3- usuarios(email, esqueceu a senha)
 #1- listar produtos (filtros)
 #2- carregar as imgs
 #4- api pix / cartão
