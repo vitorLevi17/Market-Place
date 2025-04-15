@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="login-form">
+        <h2>INSIRA SUA NOVA SENHA</h2>
+        <form action="{% url 'mudar_senha' id %}" method="post">
+            {% csrf_token %}
+            <label for="password">Senha:</label>
+            <input type="password" id="senha" name="senha" required>
+            <label for="password">Senha:</label>
+            <input type="password" id="senha1" name="senha1" required>
+            <button type="submit">Alterar</button>
+            {% if messages %}
+                <div class="error-message">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+</body>
+</html>

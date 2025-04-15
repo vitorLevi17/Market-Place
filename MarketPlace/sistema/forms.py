@@ -114,3 +114,33 @@ class UsuarioForm(forms.Form):
             }
         )
     )
+
+class ReceberEmailForm(forms.Form):
+    email = forms.EmailField(
+        label="Email",
+        required=True,
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "Ex. Doador.Oliveira@gmail.com"
+            }
+        )
+    )
+class MudarSenhaForm(forms.Form):
+    senha = forms.CharField(
+        label="senha",
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Senha"
+            }
+        )
+    )
+    senha1 = forms.CharField(
+        label="senha1",
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                "placeholder": "Confirme a Senha"
+            }
+        )
+    )

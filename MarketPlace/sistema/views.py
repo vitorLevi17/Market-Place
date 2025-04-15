@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import auth,messages
 from django.shortcuts import render,redirect
 import requests
-from .forms import LoginForm,UsuarioForm
+from .forms import LoginForm,UsuarioForm,ReceberEmailForm,MudarSenhaForm
 from dotenv import load_dotenv
 from validate_docbr import CPF
 from .validators import valida_cep
@@ -137,3 +137,35 @@ def logout(request):
     auth.logout(request)
     messages.success(request,"Logout feito")
     return redirect('entrar')
+
+def receber_email(request):
+    form = ReceberEmailForm(request.POST)
+    email = form['email'].value()
+    if form.is_valid() and User.objects.filter(email=email).exists():
+        usuario = User.objects.get(email=email)
+        id_usuario = usuario.id
+        print(id_usuario,email)
+        # enviar email para usuario
+        # Passar endereço de email no parametro para metodo de envio de email
+        messages.success(request,'Tudo certo')
+        return redirect('index')
+    else:
+        messages.success(request, 'Tudo errado')
+    return render(request,'rec_senha.html',{'form':form})
+
+def mudar_senha(request,id):
+    form = MudarSenhaForm(request.POST)
+    senha = form['senha'].value()
+    senha1 = form['senha1'].value()
+
+    if form.is_valid() and senha1 == senha:
+        usuario = User.objects.get(id=id)
+
+        usuario.set_password(senha1)
+        usuario.save()
+        messages.success(request, "Senha alterada com sucesso!")
+        return redirect('index')
+    else:
+        messages.error(request,"Senhas não coincidem ou invalidas")
+
+    return render(request,'mudar_senha.html',{'form':form,'id': id})
