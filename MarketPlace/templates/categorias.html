@@ -2,20 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tisadsdsdsdsdasdsatle</title>
+    <title>Title</title>
 </head>
 <body>
-
-    <div>
-        <a href="{% url 'categorias' 1%}">
-            <img src="https://th.bing.com/th/id/OIP.LFDtn7VTK6A1ls-PkpEjuwHaEL?rs=1&pid=ImgDetMain">
-        </a>
-    </div>
-    <div>
-        <a href="{% url 'categorias' 2%}">
-            <img src="https://th.bing.com/th/id/OIP.IB9OTTM-4hwFj8HR8McGywHaHa?rs=1&pid=ImgDetMain">
-        </a>
-    </div>
     {% if context %}
     {% for conte in context %}
     <h1>Produto</h1>
@@ -26,10 +15,8 @@
     <p>Descrição: {{ conte.descricao }}</p>
     <img src="https://apimarketplace24022025.s3.sa-east-1.amazonaws.com/uploads/programacao-scaled.jpg" alt="Imagem do Produto">
     {% endfor %}
-{% else %}
+    {% else %}
     <p>Erro ao carregar o produto.</p>
-{% endif %}
-    <a href="{% url 'logout' %}" id="registerLink">Logout</a>
-
+    {% endif %}
 </body>
 </html>
