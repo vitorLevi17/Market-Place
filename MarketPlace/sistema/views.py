@@ -20,7 +20,7 @@ def index(request):
     resposta = requests.get(url,headers=headers)
     resposta_json = resposta.json()
     #'http://127.0.0.1:8000/Produto/?search=Book 2'
-    return render(request,'index.html',{'context':resposta_json})
+    return render(request,'sistema/index.html',{'context':resposta_json})
 def teste(request):
     url = 'http://127.0.0.1:5000/Produto/15/'
     token = os.getenv('TOKEN')
@@ -45,7 +45,7 @@ def teste(request):
     if resposta.status_code == 200:
         print("Tudo certo na Bahia")
 
-    return render(request,'teste.html',{'resposta':resposta.json()})
+    return render(request,'sistema/teste.html',{'resposta':resposta.json()})
 def entrar(request):
     login = LoginForm()
 
@@ -72,7 +72,7 @@ def entrar(request):
                 messages.error(request,"Email não encontrado")
         else:
             messages.error(request,"Email invalido")
-    return render(request,'entrar.html',{'login':login})
+    return render(request,'sistema/entrar.html',{'login':login})
 
 def cadastro(request):
     form = UsuarioForm()
@@ -131,7 +131,7 @@ def cadastro(request):
             messages.error(request, "Email inválido ")
             return redirect('cadastro')
 
-    return render(request,'cadastro.html',{'form':form})
+    return render(request,'sistema/cadastro.html',{'form':form})
 
 def logout(request):
     auth.logout(request)
@@ -151,7 +151,7 @@ def receber_email(request):
         return redirect('index')
     else:
         messages.success(request, 'Tudo errado')
-    return render(request,'receber_email.html',{'form':form})
+    return render(request,'sistema/receber_email.html',{'form':form})
 
 def mudar_senha(request,id):
     form = MudarSenhaForm(request.POST)
@@ -168,4 +168,4 @@ def mudar_senha(request,id):
     else:
         messages.error(request,"Senhas não coincidem ou invalidas")
 
-    return render(request,'mudar_senha.html',{'form':form,'id': id})
+    return render(request,'sistema/mudar_senha.html',{'form':form,'id': id})

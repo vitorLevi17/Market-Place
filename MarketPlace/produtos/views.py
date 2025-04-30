@@ -11,5 +11,5 @@ def categorias(request,categoria):
         'Content-Type': 'application/json'
     }
     response = requests.get(url,headers=headers).json()
-    return render(request,'categorias.html',{'context':response})
+    return render(request,'produtos/categorias.html',{'context':response})
 
