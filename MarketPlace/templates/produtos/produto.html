@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if context %}
+    <h1>Produto</h1>
+    <p>Id: {{ context.id }}</p>
+    <p>Nome: {{ context.Nome }}</p>
+    <p>Autor: {{ context.autor }}</p>
+    <p>Quantidade: {{ context.quantidade }}</p>
+    <p>Preço: {{ context.preco }}</p>
+    <p>Descrição: {{ context.descricao }}</p>
+    <img src="https://apimarketplace24022025.s3.sa-east-1.amazonaws.com/uploads/programacao-scaled.jpg" alt="Imagem do Produto">
+{% endif %}
+
+</body>
+</html>

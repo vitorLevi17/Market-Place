@@ -19,12 +19,14 @@
     {% if context %}
     {% for conte in context %}
     <h1>Produto</h1>
+    <p>Id: {{ conte.id }}</p>
     <p>Nome: {{ conte.Nome }}</p>
     <p>Autor: {{ conte.autor }}</p>
     <p>Quantidade: {{ conte.quantidade }}</p>
     <p>Preço: {{ conte.preco }}</p>
     <p>Descrição: {{ conte.descricao }}</p>
     <img src="https://apimarketplace24022025.s3.sa-east-1.amazonaws.com/uploads/programacao-scaled.jpg" alt="Imagem do Produto">
+    <a href="{% url 'produto'  conte.id  %}">Comprar</a>
     {% endfor %}
 {% else %}
     <p>Erro ao carregar o produto.</p>
