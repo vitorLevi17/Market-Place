@@ -13,8 +13,9 @@
     <p>Quantidade: {{ context.quantidade }}</p>
     <p>Preço: {{ context.preco }}</p>
     <p>Descrição: {{ context.descricao }}</p>
-    <img src="https://apimarketplace24022025.s3.sa-east-1.amazonaws.com/uploads/programacao-scaled.jpg" alt="Imagem do Produto">
+    <img src="{{ context.imagem }}" alt="Imagem do Produto">
 {% endif %}
+    <button type="submit">Comprar</button>
 
 </body>
 </html>

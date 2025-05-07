@@ -23,5 +23,10 @@ class Compra(models.Model):
     data = models.DateTimeField(default=now)
     parcelas = models.IntegerField(default=1)
 
+class Favoritos(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    produto = models.IntegerField(null=False, blank=False)
+
+
 
 
