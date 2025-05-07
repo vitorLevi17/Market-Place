@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Usuarios,FormaPag,Compra
+from .models import Usuarios,FormaPag,Compra,Favoritos
 
 class listaUsuario(admin.ModelAdmin):
     # list_display = ("usuario", "nm_doador", "cpf", "cep")
@@ -12,4 +12,5 @@ class listaUsuario(admin.ModelAdmin):
 admin.site.register(Usuarios,listaUsuario)
 admin.site.register(FormaPag)
 admin.site.register(Compra)
+admin.site.register(Favoritos)
 

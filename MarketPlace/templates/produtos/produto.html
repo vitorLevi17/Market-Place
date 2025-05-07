@@ -14,8 +14,15 @@
     <p>Preço: {{ context.preco }}</p>
     <p>Descrição: {{ context.descricao }}</p>
     <img src="{{ context.imagem }}" alt="Imagem do Produto">
+    <a href="{% url 'favoritos' context.id %}">Favoritar</a>
 {% endif %}
     <button type="submit">Comprar</button>
-
+    {% if messages %}
+                <div class="error-message">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+    {% endif %}
 </body>
 </html>

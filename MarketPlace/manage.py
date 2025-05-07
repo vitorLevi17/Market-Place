@@ -4,7 +4,7 @@ import os
 import sys
 #3- usuarios(email, esqueceu a senha)
 #1- listar produtos (filtros - nome - autor - preco)
-#-Favoritar
+#-Desfavoritar
 #-Tela de compra(frete,quantidade, confirmar endereço)
 #2- carregar as imgs
 #4- api pix / cartão
