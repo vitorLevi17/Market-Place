@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% if context %}
+    {% for conte in context %}
+    <h1>Produto</h1>
+    <p>Nome: {{ conte.Nome }}</p>
+    <p>Autor: {{ conte.autor }}</p>
+    <p>Quantidade: {{ conte.quantidade }}</p>
+    <p>Preço: {{ conte.preco }}</p>
+    <p>Descrição: {{ conte.descricao }}</p>
+    <img src="https://apimarketplace24022025.s3.sa-east-1.amazonaws.com/uploads/programacao-scaled.jpg" alt="Imagem do Produto">
+    <!-- <a href="{% url 'desfavoritar' %}" id="desfavoritar">Remover dos favoritos</a> -->
+    <!--<a href="{% url 'comprar' %}" id="Comprar">Logout</a> -->
+    {% endfor %}
+    {% else %}
+    <p>Adicione produtos aos favoritos.</p>
+{% endif %}
+</body>
+</html>

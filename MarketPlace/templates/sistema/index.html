@@ -31,6 +31,7 @@
 {% else %}
     <p>Erro ao carregar o produto.</p>
 {% endif %}
+    <a href="{% url 'lista_favoritos' %}" id="listaFavoritos">Favoritos</a>
     <a href="{% url 'logout' %}" id="registerLink">Logout</a>
 
 </body>
