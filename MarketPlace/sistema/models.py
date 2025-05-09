@@ -27,6 +27,9 @@ class Favoritos(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     produto = models.IntegerField(null=False, blank=False)
 
-
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['usuario', 'produto'], name='unique_favorito')
+        ]
 
 

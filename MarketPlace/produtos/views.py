@@ -1,9 +1,8 @@
 import os
 import requests
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from dotenv import load_dotenv
-from sistema.models import Favoritos,User
-from django.shortcuts import get_object_or_404
+from sistema.models import Favoritos
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 load_dotenv()
@@ -36,9 +35,13 @@ def favoritos(request,produto):
     response = requests.get(url, headers=headers).json()
     usuario = request.user
     produto = produto
-    favoritos = Favoritos.objects.create(usuario = usuario,produto = produto)
-    favoritos.save()
-    messages.success(request,"Item favoritado com sucesso")
+
+    if not Favoritos.objects.filter(usuario=usuario,produto=produto).exists():
+        favoritos = Favoritos.objects.create(usuario = usuario,produto = produto)
+        favoritos.save()
+        messages.success(request,"Item favoritado com sucesso")
+    else:
+        messages.error(request,"Produto já salvo")
     return render(request,"produtos/produto.html",{'context':response})
 @login_required(login_url='/entrar/')
 def lista_favoritos(request):
