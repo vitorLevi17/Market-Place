@@ -15,6 +15,7 @@
     <p>Descrição: {{ context.descricao }}</p>
     <img src="{{ context.imagem }}" alt="Imagem do Produto">
     <a href="{% url 'favoritos' context.id %}">Favoritar</a>
+    <a href="{% url 'desfavoritar' context.id %}">Remover dos favoritos</a>
 {% endif %}
     <button type="submit">Comprar</button>
     {% if messages %}
