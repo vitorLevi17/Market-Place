@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from sistema.models import Favoritos
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .forms import Compra
+from sistema.validators import valida_cep
 load_dotenv()
 def produto(request,produto):
     url = 'http://127.0.0.1:5000/Produto/'+str(produto)
@@ -73,6 +75,28 @@ def desfavoritar(request,produto):
     favoritos.delete()
     messages.success(request,"Item excluido com sucesso")
     return render(request,"produtos/produto.html",{'context':response})
+
+def compra(request,produto):
+    url = 'http://127.0.0.1:5000/Produto/' + str(produto)
+    token = os.getenv('TOKEN')
+    headers = {
+        'Authorization': f'Token {token}',
+        'Content-Type': 'application/json'
+    }
+    response = requests.get(url, headers=headers).json()
+    form = Compra(request.POST)
+    quantidade = form['quantidade'].value()
+    cep = form['cep'].value()
+    if not form.is_valid():
+        messages.error(request,'A quantidade deve ser maior ou igual a 1')
+    elif valida_cep(cep) != True:
+        messages.error(request, 'CEP inválido')
+    else:
+        messages.success(request,'tudo certo')
+        #1/2/12 frete
+
+    return render(request,"produtos/compra.html",{'context':response,'form':form})
+
 # def preco_produto(request,preco_min,preco_max):
 #     url = 'http://localhost:5000/Produto/'+str(preco_min)+'/'+str(preco_max)+'/'
 #     token = os.getenv('TOKEN')

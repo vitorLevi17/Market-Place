@@ -1,10 +1,8 @@
-#!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
 #3- usuarios(email, esqueceu a senha)
-#-Desfavoritar
-#-Tela de compra(frete,quantidade, confirmar endereço)
+#-Tela de compra(frete, confirmar endereço,alterar preço, if request.user == true mnter info de endereço)
 #4- api pix / cartão
 #5- finalizar compra
 #filtros - nome - autor - preco

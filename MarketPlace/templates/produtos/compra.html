@@ -14,16 +14,24 @@
     <p>Preço: {{ context.preco }}</p>
     <p>Descrição: {{ context.descricao }}</p>
     <img src="{{ context.imagem }}" alt="Imagem do Produto">
-    <a href="{% url 'favoritos' context.id %}">Favoritar</a>
-    <a href="{% url 'desfavoritar' context.id %}">Remover dos favoritos</a>
 {% endif %}
-    <a href="{% url 'compra' context.id %}">Comprar</a>
-    {% if messages %}
+    <form action="{% url 'compra' context.id %}" method="post">
+        {% csrf_token %}
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" name="quantidade" required>
+
+            <label for="cep">CEP:</label>
+            <input type="text" id="cep" name="cep" required>
+
+            {% if messages %}
                 <div class="error-message">
                     {% for message in messages %}
                         <p>{{ message }}</p>
                     {% endfor %}
                 </div>
-    {% endif %}
+            {% endif %}
+        <button type="submit">Comprar</button>
+    </form>
+
 </body>
 </html>

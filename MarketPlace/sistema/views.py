@@ -81,9 +81,9 @@ def cadastro(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
 
-        username = form["username"].value() #
-        nome = form["nome"].value()#
-        sobrenome = form["sobrenome"].value()#
+        username = form["username"].value()
+        nome = form["nome"].value()
+        sobrenome = form["sobrenome"].value()
         email = form["email"].value()
         senha = form["senha"].value()
         senha1 = form["senha1"].value()
