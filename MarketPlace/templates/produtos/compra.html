@@ -33,5 +33,17 @@
         <button type="submit">Comprar</button>
     </form>
 
+{% if fretes%}
+    {% for frete in fretes %}
+        <p>Id: {{ frete.id }}</p>
+        <p>Nome: {{ frete.name }}</p>
+        <p>Preco: {{ frete.price }}</p>
+        <p>Tempo estimado: {{ frete.custom_delivery_range }}</p>
+        <p>{{ frete.picture }}</p>
+    SELECIONAR ITEM
+    {% endfor %}
+    REDIRECIONAR PARA PAGAMENTO
+{% endif %}
+    <p>{{ total }}</p>
 </body>
 </html>

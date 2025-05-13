@@ -1,5 +1,4 @@
-import os
-import requests
+from decimal import Decimal
 from django.shortcuts import render
 from dotenv import load_dotenv
 from sistema.models import Favoritos
@@ -49,29 +48,34 @@ def desfavoritar(request,produto):
 
 def compra(request,produto):
     response = requisitarProduto(produto)
+    preco = Decimal(str(response['preco']))
+    lista_Fretes = []
+    total = preco
     form = Compra(request.POST)
-    quantidade = form['quantidade'].value()
     cep = form['cep'].value()
     if not form.is_valid():
         messages.error(request,'A quantidade deve ser maior ou igual a 1')
     elif valida_cep(cep) != True:
         messages.error(request, 'CEP inválido')
     else:
+        quantidade = Decimal(form.cleaned_data["quantidade"])
         fretes = requisitarFretes(cep)
-        lista_Fretes = []
         for frete in fretes:
             if "error" not in frete:
                 lista_Fretes.append(frete)
-        print(lista_Fretes)
+                frete_escolhido = 0
+                total = preco * quantidade
 
-    return render(request,"produtos/compra.html",{'context': response, 'form': form ,'fretes': lista_Fretes})
-
+    return render(request,"produtos/compra.html",{'context': response,
+                                                  'form': form ,
+                                                  'fretes': lista_Fretes,
+                                                  'total':total})
 # def preco_produto(request,preco_min,preco_max):
 #     url = 'http://localhost:5000/Produto/'+str(preco_min)+'/'+str(preco_max)+'/'
 #     token = os.getenv('TOKEN')
 #     headers = {
 #         'Authorization': f'Token {token}',
 #         'Content-Type': 'application/json'
-#     }
+#
 #     response = requests.get(url, headers=headers).json()
 #     return render(request, 'sistema/index.html', {'context': response})
