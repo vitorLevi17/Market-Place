@@ -2,7 +2,7 @@
 import os
 import sys
 #3- usuarios(email, esqueceu a senha)
-#-Tela de compra(metodo compra da API,confirmar endereço,alterar preço, if request.user == true mnter info de endereço)
+#-Tela de compra(metodo compra da API,confirmar endereço, if request.user == true mnter info de endereço)
 #4- api pix / cartão
 #5- finalizar compra
 #filtros - nome - autor - preco

@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import Compra
 from sistema.validators import valida_cep
-from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria
+from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId
 load_dotenv()
 def produto(request,produto):
     response = requisitarProduto(produto)
@@ -63,9 +63,12 @@ def compra(request,produto):
         for frete in fretes:
             if "error" not in frete:
                 lista_Fretes.append(frete)
-                frete_escolhido = 0
                 total = preco * quantidade
 
+    frete_id = request.POST.get('frete_id')
+    if frete_id:
+        frete = requisitarFreteId(cep,frete_id)
+        total += frete
     return render(request,"produtos/compra.html",{'context': response,
                                                   'form': form ,
                                                   'fretes': lista_Fretes,
