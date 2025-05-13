@@ -18,10 +18,10 @@
     <form action="{% url 'compra' context.id %}" method="post">
         {% csrf_token %}
             <label for="quantidade">Quantidade:</label>
-            <input type="number" id="quantidade" name="quantidade" required>
+            <input type="number" id="quantidade" name="quantidade" required value="{{ form.quantidade.value|default_if_none:'' }}">
 
             <label for="cep">CEP:</label>
-            <input type="text" id="cep" name="cep" required>
+            <input type="text" id="cep" name="cep" required value="{{ form.cep.value|default_if_none:'' }}">
 
             {% if messages %}
                 <div class="error-message">
