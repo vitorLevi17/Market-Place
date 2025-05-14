@@ -11,7 +11,7 @@
     <p>Nome: {{ context.Nome }}</p>
     <p>Autor: {{ context.autor }}</p>
     <p>Quantidade: {{ context.quantidade }}</p>
-    <p>Preço: {{ context.preco }}</p>
+    <p>Preço: <span id="preco_produto">{{ context.preco }}</span></p>
     <p>Descrição: {{ context.descricao }}</p>
     <img src="{{ context.imagem }}" alt="Imagem do Produto">
 {% endif %}
@@ -30,22 +30,41 @@
                     {% endfor %}
                 </div>
             {% endif %}
-        <button type="submit">Comprar</button>
+        <button type="submit">Calcular frete</button>
     {% if fretes%}
         {% for frete in fretes %}
             <p>Id: {{ frete.id }}</p>
             <p>Nome: {{ frete.name }}</p>
             <p>Preco: {{ frete.price }}</p>
             <p>Tempo estimado: {{ frete.custom_delivery_range }}</p>
-            <p>{{ frete.picture }}</p>
-            <input type="radio" name="frete_id" value="{{ frete.id }}">
+            <img src="{{ frete.picture }}" alt="Imagem do Frete" style="max-width: 100px;">
+            <input type="radio" name="frete_id" value="{{ frete.id }}" data-price="{{ frete.price }}">
             {{ frete.name }}
         {% endfor %}
     <button type="button">IR PARA O PAGAMENTO</button>
     {% endif %}
     </form>
-
-
     <p>{{ total }}</p>
+    <p>Total: R$ <span id="total">--</span></p>
+
+    <script>
+        const quantidadeUsuario = document.getElementById("quantidade")
+        const precoProduto = parseFloat(document.getElementById("preco_produto").textContent);
+        const freteRadios = document.querySelectorAll('input[name="frete_id"]');
+        const preco_total = document.getElementById("total")
+
+        function atualizarPreco(){
+            var quantidade = parseInt(quantidadeUsuario.value) || 1
+            var freteSelecionado = document.querySelector('input[name="frete_id"]:checked')
+            var precoFrete = freteSelecionado ? parseFloat(freteSelecionado.dataset.price) : 0
+
+            var total = (quantidade * precoProduto) + precoFrete
+            preco_total.textContent = total.toFixed(2);
+        }
+        quantidadeUsuario.addEventListener("input", atualizarPreco)
+        freteRadios.forEach(radio => {
+            radio.addEventListener("change", atualizarPreco)
+        })
+    </script>
 </body>
 </html>

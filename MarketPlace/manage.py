@@ -1,11 +1,12 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-#3- usuarios(email, esqueceu a senha)
+
 #-Tela de compra(metodo compra da API,confirmar endereço, if request.user == true mnter info de endereço)
 #4- api pix / cartão
 #5- finalizar compra
 #filtros - nome - autor - preco
+#3- usuarios(email, esqueceu a senha)
 #2- carregar as imgs
 
 
