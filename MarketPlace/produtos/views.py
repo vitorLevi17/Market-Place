@@ -41,9 +41,12 @@ def lista_favoritos(request):
 def desfavoritar(request,produto):
     response = requisitarProduto(produto)
     usuario = request.user
-    favoritos = Favoritos.objects.get(usuario=usuario,produto=produto)
-    favoritos.delete()
-    messages.success(request,"Item excluido com sucesso")
+    try:
+        favoritos = Favoritos.objects.get(usuario=usuario, produto=produto)
+        favoritos.delete()
+        messages.success(request,"Item excluido com sucesso")
+    except Favoritos.DoesNotExist:
+        messages.error(request,"Você não adicionou o item aos favoritos")
     return render(request,"produtos/produto.html",{'context':response})
 
 def compra(request,produto):
