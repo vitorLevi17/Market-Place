@@ -22,6 +22,13 @@ class Compra(models.Model):
     produto = models.IntegerField(null=False,blank=False)
     data = models.DateTimeField(default=now)
     parcelas = models.IntegerField(default=1)
+    #quantidade = models.IntegerField(null=False,blank=False)
+    #frete_id = models.IntegerField(null=False,blank=False)
+    #endereço
+    #tempo previsto
+    #tempo chegada
+    #valor_compra
+    #status
 
 class Favoritos(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

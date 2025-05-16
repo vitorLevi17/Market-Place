@@ -1,12 +1,12 @@
 from decimal import Decimal
 from django.shortcuts import render
 from dotenv import load_dotenv
-from sistema.models import Favoritos
+from sistema.models import Favoritos,FormaPag
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import Compra
 from sistema.validators import valida_cep
-from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId
+from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId,requisitarFreteTempo
 load_dotenv()
 def produto(request,produto):
     response = requisitarProduto(produto)
@@ -48,7 +48,6 @@ def desfavoritar(request,produto):
     except Favoritos.DoesNotExist:
         messages.error(request,"Você não adicionou o item aos favoritos")
     return render(request,"produtos/produto.html",{'context':response})
-
 def compra(request,produto):
     response = requisitarProduto(produto)
     preco = Decimal(str(response['preco']))
@@ -76,6 +75,25 @@ def compra(request,produto):
                                                   'form': form ,
                                                   'fretes': lista_Fretes,
                                                   'total':total})
+@login_required(login_url='/entrar/')
+def finalizar_compra(request,produto_id,quantidade,frete_id,cep,total):
+    usuario = request.user
+    forma_pagamento = FormaPag.objects.get()
+    produto = produto_id
+    quantidade_produto = quantidade
+    parcelas = 0
+    frete = frete_id
+    valor_compra = total
+    endereco = cep #+complemento
+    tempo_previsto = requisitarFreteTempo(cep,frete_id)
+    # tempo chegada
+
+    print(forma_pagamento)
+    return render(request,"produtos/finalizar_compra.html",({'context': forma_pagamento}))
+
+
+
+
 # def preco_produto(request,preco_min,preco_max):
 #     url = 'http://localhost:5000/Produto/'+str(preco_min)+'/'+str(preco_max)+'/'
 #     token = os.getenv('TOKEN')
