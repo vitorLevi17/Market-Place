@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if context %}
+    <h1>Produto</h1>
+    <p>Id: {{ context.id }}</p>
+    <p>Nome: {{ context.nome }}</p>
+{% endif %}
+</body>
+</html>

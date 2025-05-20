@@ -1,5 +1,5 @@
 from decimal import Decimal
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from dotenv import load_dotenv
 from sistema.models import Favoritos,FormaPag
 from django.contrib import messages
@@ -71,35 +71,28 @@ def compra(request,produto):
     if frete_id:
         frete = requisitarFreteId(cep,frete_id)
         total += frete
+        request.session['total'] = float(total)
+        #request.session['quantidade'] = int(quantidade)
+        request.session['frete_id'] = frete_id
+        request.session['cep'] = cep
+        return redirect('finalizar_compra',produto = produto)
+
     return render(request,"produtos/compra.html",{'context': response,
                                                   'form': form ,
                                                   'fretes': lista_Fretes,
                                                   'total':total})
 @login_required(login_url='/entrar/')
-def finalizar_compra(request,produto_id,quantidade,frete_id,cep,total):
+def finalizar_compra(request,produto):
     usuario = request.user
-    forma_pagamento = FormaPag.objects.get()
-    produto = produto_id
-    quantidade_produto = quantidade
+    forma_pagamento = FormaPag.objects.filter()
+    #quantidade_produto = quantidade
     parcelas = 0
-    frete = frete_id
-    valor_compra = total
-    endereco = cep #+complemento
+    frete_id = request.session.get('frete_id')
+    valor_compra = request.session.get('total')
+    cep = request.session.get('cep') #+complemento
     tempo_previsto = requisitarFreteTempo(cep,frete_id)
     # tempo chegada
-
-    print(forma_pagamento)
+    print(cep)
+    # if forma_pagamento == 3:
+    #     return redirect('finalizar_compra_pix')
     return render(request,"produtos/finalizar_compra.html",({'context': forma_pagamento}))
-
-
-
-
-# def preco_produto(request,preco_min,preco_max):
-#     url = 'http://localhost:5000/Produto/'+str(preco_min)+'/'+str(preco_max)+'/'
-#     token = os.getenv('TOKEN')
-#     headers = {
-#         'Authorization': f'Token {token}',
-#         'Content-Type': 'application/json'
-#
-#     response = requests.get(url, headers=headers).json()
-#     return render(request, 'sistema/index.html', {'context': response})
