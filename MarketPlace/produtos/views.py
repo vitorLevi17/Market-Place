@@ -71,19 +71,21 @@ def compra(request,produto):
     if frete_id:
         frete = requisitarFreteId(cep,frete_id)
         total += frete
+        request.session['produto_id'] = response['id']
         request.session['total'] = float(total)
         #request.session['quantidade'] = int(quantidade)
         request.session['frete_id'] = frete_id
         request.session['cep'] = cep
-        return redirect('finalizar_compra',produto = produto)
+        return redirect('finalizar_compra')
 
     return render(request,"produtos/compra.html",{'context': response,
                                                   'form': form ,
                                                   'fretes': lista_Fretes,
                                                   'total':total})
 @login_required(login_url='/entrar/')
-def finalizar_compra(request,produto):
+def finalizar_compra(request):
     usuario = request.user
+    produto = request.session.get('produto_id')
     forma_pagamento = FormaPag.objects.filter()
     #quantidade_produto = quantidade
     parcelas = 0
@@ -92,7 +94,8 @@ def finalizar_compra(request,produto):
     cep = request.session.get('cep') #+complemento
     tempo_previsto = requisitarFreteTempo(cep,frete_id)
     # tempo chegada
-    print(cep)
+    form_pag_id = request.POST.get('form_pag_id')
+    print(produto,valor_compra)
     # if forma_pagamento == 3:
     #     return redirect('finalizar_compra_pix')
     return render(request,"produtos/finalizar_compra.html",({'context': forma_pagamento}))
