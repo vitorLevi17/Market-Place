@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Usuarios,FormaPag,Compra,Favoritos
+from .models import Usuarios,FormaPag,Favoritos,Compra
 
 class listaUsuario(admin.ModelAdmin):
     # list_display = ("usuario", "nm_doador", "cpf", "cep")

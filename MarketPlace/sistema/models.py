@@ -22,13 +22,13 @@ class Compra(models.Model):
     produto = models.IntegerField(null=False,blank=False)
     data = models.DateTimeField(default=now)
     parcelas = models.IntegerField(default=1)
-    #quantidade = models.IntegerField(null=False,blank=False)
-    #frete_id = models.IntegerField(null=False,blank=False)
-    #endereço
-    #tempo previsto
-    #tempo chegada
-    #valor_compra
-    #status
+    quantidade = models.IntegerField(null=False,blank=False)
+    frete_id = models.IntegerField(default=0)
+    endereco = models.CharField(max_length=225,null=False)
+    tempo_previsto = models.IntegerField(null=False,blank=False)
+    tempo_chegada = models.IntegerField()
+    valor_compra = models.FloatField(null=False,blank=False)
+    status = models.IntegerField(default=1) #1-Não Entregue 2-Entregue
 
 class Favoritos(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
