@@ -3,6 +3,7 @@ import os
 import sys
 
 #-Tela de compra(metodo compra da API,confirmar endereço, if request.user == true mnter info de endereço)
+#Retirar um botão em COMPRA.HTML
 #4- api pix / cartão
 #5- finalizar compra
 #filtros - nome - autor - preco
