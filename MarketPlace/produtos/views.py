@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import Compra
 from sistema.validators import valida_cep
 from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId,requisitarFreteTempo
+from .compra import pagar
 load_dotenv()
 def produto(request,produto):
     response = requisitarProduto(produto)
@@ -76,7 +77,8 @@ def compra(request,produto):
         #request.session['quantidade'] = int(quantidade)
         request.session['frete_id'] = frete_id
         request.session['cep'] = cep
-        return redirect('finalizar_compra')
+        link = pagar()
+        return redirect(link)
 
     return render(request,"produtos/compra.html",{'context': response,
                                                   'form': form ,
