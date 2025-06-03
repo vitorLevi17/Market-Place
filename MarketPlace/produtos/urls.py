@@ -8,6 +8,7 @@ urlpatterns = [
     path('lista_favoritos/',lista_favoritos,name='lista_favoritos'),
     path('desfavoritar/<int:produto>/',desfavoritar,name='desfavoritar'),
     path('compra/<int:produto>/',compra,name='compra'),
-    path('finalizar_compra/',finalizar_compra,name='finalizar_compra')
+    path('finalizar_compra/',finalizar_compra,name='finalizar_compra'),
+    path('fim_compra',pos_pagamento,name='pos_pagamento')
     #path('preco_produto/<str:preco_min>/<str:preco_max>/',preco_produto,name='preco_produto')
 ]

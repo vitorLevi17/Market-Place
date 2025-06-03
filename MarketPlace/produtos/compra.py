@@ -17,13 +17,13 @@ def pagar():
 		],
 		"back_urls":{
 			"success": "https://www.youtube.com/",
-			"failure":"https://discord.com/",
-			"pending":"https://discord.com/",
+			"failure":"http://127.0.0.1:8000/",
+			"pending":"http://127.0.0.1:8000/",
 		},
 		"auto_return": "all",
 	}
 	result = sdk.preference().create(payment_data)
 	payment = result["response"]
-	link_pagamento = payment["sandbox_init_point"] #init_point ou sandbox_init_point
+	link_pagamento = payment["init_point"] #init_point ou sandbox_init_point
 	print(payment)
 	return link_pagamento

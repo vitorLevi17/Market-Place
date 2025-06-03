@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.shortcuts import render,redirect
 from dotenv import load_dotenv
-from sistema.models import Favoritos,FormaPag
+from sistema.models import Favoritos,FormaPag,Compra
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import Compra
@@ -72,6 +72,8 @@ def compra(request,produto):
     if frete_id:
         frete = requisitarFreteId(cep,frete_id)
         total += frete
+        id = response['id']
+        nome = response['Nome']
         request.session['produto_id'] = response['id']
         request.session['total'] = float(total)
         #request.session['quantidade'] = int(quantidade)
@@ -84,6 +86,32 @@ def compra(request,produto):
                                                   'form': form ,
                                                   'fretes': lista_Fretes,
                                                   'total':total})
+
+def pos_pagamento(request):
+    usuario=request.user
+    #forma_pag
+    produto = request.session.get('produto_id')
+    #parcelas
+    #quantidade
+    frete_id = request.session.get('frete_id')
+    endereco = request.session.get('cep')
+    # tempo_previsto
+    # tempo_chegada
+    # valor_compra
+    # compra = Compra.objects.create(
+    #     usuario=usuario,
+    #     # forma_pag
+    #     produto = produto,
+    #     # parcelas
+    #     # quantidade
+    #     frete_id = frete_id,
+    #     endereco = endereco,
+    #     # tempo_previsto,
+    #     # tempo_chegada,
+    #     # valor_compra,
+    # )
+    # compra.save()
+    return render(request,'produtos/pos_pagamento.html')
 @login_required(login_url='/entrar/')
 def finalizar_compra(request):
     usuario = request.user
