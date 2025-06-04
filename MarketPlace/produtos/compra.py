@@ -30,17 +30,15 @@ def pagar(id,titulo,preco):
 	return link_pagamento
 
 def forma_Pagamento(tipo):
-
 	if tipo == 'account_money': #Dinheiro	na	conta	do	Mercado	Pago.
-		return 'Conta Mercado Pago'
-	#ticket #Boletos, PayCash, Efecty, Oxxo, etc.
+		return 4
 	elif tipo == 'bank_transfer': #Pix	e	PSE(Pagos	Seguros	en	Línea).
-		return 'PIX'
+		return 3
 	elif tipo == 'credit_card': #Pagamento	com	cartão	de	crédito.
-		return 'Crédito'
+		return 2
 	elif tipo == 'debit_card': #Pagamento	com	cartão	de	débito.
-		return 'Débito'
+		return 1
 	else:
-		return 'Outros'
+		return 1000
 	# prepaid_card #Pagamento	com	cartão	pré - pago.
 	# digital_currency #Purchases	with Linha de Crédito.	voucher_card: Alelo	benefícios	e	Sodexo.
