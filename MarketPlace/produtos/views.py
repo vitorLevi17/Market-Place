@@ -52,6 +52,7 @@ def desfavoritar(request,produto):
 def compra(request,produto):
     response = requisitarProduto(produto)
     preco = Decimal(str(response['preco']))
+    quantidade = 1
     lista_Fretes = []
     total = preco
     form = Compra(request.POST)
@@ -76,7 +77,7 @@ def compra(request,produto):
         nome = response['Nome']
         request.session['produto_id'] = response['id']
         request.session['total'] = float(total)
-        #request.session['quantidade'] = int(quantidade)
+        request.session['quantidade'] = int(quantidade)
         request.session['frete_id'] = frete_id
         request.session['cep'] = cep
         print(id,total,nome)
@@ -87,31 +88,27 @@ def compra(request,produto):
                                                   'form': form ,
                                                   'fretes': lista_Fretes,
                                                   'total':total})
-
 def pos_pagamento(request):
     usuario=request.user
+    cep = request.session.get('cep')
     tipo_pagamento = request.GET.get('payment_type')
     forma_pag = forma_Pagamento(tipo_pagamento)
     produto = request.session.get('produto_id')
-    #parcelas
-    #quantidade
+    quantidade = request.session.get("quantidade")
     frete_id = request.session.get('frete_id')
-    endereco = request.session.get('cep')
-    intervalo = requisitarFreteTempo(request.session.get('cep'),frete_id)
-    tempo_previsto = intervalo.
-    # tempo_chegada
-    # valor_compra
+    endereco = cep
+    tempo_previsto = requisitarFreteTempo(cep,frete_id)
+    valor_compra = request.session.get('total')
+    print(usuario, forma_pag, produto, quantidade, frete_id, endereco, tempo_previsto, valor_compra)
     # compra = Compra.objects.create(
     #     usuario=usuario,
     #     forma_pag = forma_pag,
     #     produto = produto,
-    #     # parcelas
     #     # quantidade
     #     frete_id = frete_id,
     #     endereco = endereco,
-    #     # tempo_previsto,
-    #     # tempo_chegada,
-    #     # valor_compra,
+    #     tempo_previsto,
+    #     valor_compra,
     # )
     # compra.save()
     return render(request,'produtos/pos_pagamento.html')
