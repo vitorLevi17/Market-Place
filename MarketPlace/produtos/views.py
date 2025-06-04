@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import Compra
 from sistema.validators import valida_cep
 from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId,requisitarFreteTempo
-from .compra import pagar
+from .compra import pagar,forma_Pagamento
 load_dotenv()
 def produto(request,produto):
     response = requisitarProduto(produto)
@@ -79,7 +79,8 @@ def compra(request,produto):
         #request.session['quantidade'] = int(quantidade)
         request.session['frete_id'] = frete_id
         request.session['cep'] = cep
-        link = pagar()
+        print(id,total,nome)
+        link = pagar(id,nome,total)
         return redirect(link)
 
     return render(request,"produtos/compra.html",{'context': response,
@@ -89,18 +90,20 @@ def compra(request,produto):
 
 def pos_pagamento(request):
     usuario=request.user
-    #forma_pag
+    tipo_pagamento = request.GET.get('payment_type')
+    forma_pag = forma_Pagamento(tipo_pagamento)
     produto = request.session.get('produto_id')
     #parcelas
     #quantidade
     frete_id = request.session.get('frete_id')
     endereco = request.session.get('cep')
-    # tempo_previsto
+    intervalo = requisitarFreteTempo(request.session.get('cep'),frete_id)
+    tempo_previsto = intervalo.
     # tempo_chegada
     # valor_compra
     # compra = Compra.objects.create(
     #     usuario=usuario,
-    #     # forma_pag
+    #     forma_pag = forma_pag,
     #     produto = produto,
     #     # parcelas
     #     # quantidade
@@ -112,20 +115,3 @@ def pos_pagamento(request):
     # )
     # compra.save()
     return render(request,'produtos/pos_pagamento.html')
-@login_required(login_url='/entrar/')
-def finalizar_compra(request):
-    usuario = request.user
-    produto = request.session.get('produto_id')
-    forma_pagamento = FormaPag.objects.filter()
-    #quantidade_produto = quantidade
-    parcelas = 0
-    frete_id = request.session.get('frete_id')
-    valor_compra = request.session.get('total')
-    cep = request.session.get('cep') #+complemento
-    tempo_previsto = requisitarFreteTempo(cep,frete_id)
-    # tempo chegada
-    form_pag_id = request.POST.get('form_pag_id')
-    print(produto,valor_compra)
-    # if forma_pagamento == 3:
-    #     return redirect('finalizar_compra_pix')
-    return render(request,"produtos/finalizar_compra.html",({'context': forma_pagamento}))
