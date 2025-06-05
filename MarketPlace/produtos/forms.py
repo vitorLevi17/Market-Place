@@ -1,6 +1,6 @@
 from django import forms
 
-class Compra(forms.Form):
+class CompraForm(forms.Form):
     quantidade = forms.DecimalField(
         label="quantidade",
         required=True,

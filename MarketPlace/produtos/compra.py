@@ -16,16 +16,16 @@ def pagar(id,titulo,preco):
 			#para adicionar outro produto, adicionar outro dicionario desse a lista
 		],
 		"back_urls":{
-			"success":"https://40fb-191-22-68-79.ngrok-free.app/fim_compra/",
-			"failure":"https://40fb-191-22-68-79.ngrok-free.app",
-			"pending":"https://40fb-191-22-68-79.ngrok-free.app",
+			"success":"https://0a1c-2804-1b3-6245-7805-a8e1-a4c6-966b-b393.ngrok-free.app/fim_compra/",
+			"failure":"https://0a1c-2804-1b3-6245-7805-a8e1-a4c6-966b-b393.ngrok-free.app",
+			"pending":"https://0a1c-2804-1b3-6245-7805-a8e1-a4c6-966b-b393.ngrok-free.app",
 		},
 		"auto_return": "all",
 	}
 	result = sdk.preference().create(payment_data)
 	print("Resposta da API Mercado Pago:", result)
 	payment = result["response"]
-	link_pagamento = payment["init_point"] #init_point ou sandbox_init_point
+	link_pagamento = payment["init_point"]#init_point ou sandbox_init_point
 	print(payment)
 	return link_pagamento
 
@@ -40,5 +40,3 @@ def forma_Pagamento(tipo):
 		return 1
 	else:
 		return 1000
-	# prepaid_card #Pagamento	com	cartão	pré - pago.
-	# digital_currency #Purchases	with Linha de Crédito.	voucher_card: Alelo	benefícios	e	Sodexo.

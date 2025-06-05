@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from sistema.models import Favoritos,FormaPag,Compra
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import Compra
+from .forms import CompraForm
 from sistema.validators import valida_cep
 from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId,requisitarFreteTempo
 from .compra import pagar,forma_Pagamento
@@ -49,13 +49,15 @@ def desfavoritar(request,produto):
     except Favoritos.DoesNotExist:
         messages.error(request,"Você não adicionou o item aos favoritos")
     return render(request,"produtos/produto.html",{'context':response})
+#@login_required(login_url='/entrar/')
+#Adicionar complemento
 def compra(request,produto):
     response = requisitarProduto(produto)
     preco = Decimal(str(response['preco']))
     quantidade = 1
     lista_Fretes = []
     total = preco
-    form = Compra(request.POST)
+    form = CompraForm(request.POST)
     cep = form['cep'].value()
     if not form.is_valid():
         messages.error(request,'A quantidade deve ser maior ou igual a 1')
@@ -92,23 +94,23 @@ def pos_pagamento(request):
     usuario=request.user
     cep = request.session.get('cep')
     tipo_pagamento = request.GET.get('payment_type')
-    forma_pag = forma_Pagamento(tipo_pagamento)
+    id_forma_pag = forma_Pagamento(tipo_pagamento)
+    forma_pag = FormaPag.objects.get(id=id_forma_pag)
     produto = request.session.get('produto_id')
     quantidade = request.session.get("quantidade")
     frete_id = request.session.get('frete_id')
     endereco = cep
     tempo_previsto = requisitarFreteTempo(cep,frete_id)
     valor_compra = request.session.get('total')
-    print(usuario, forma_pag, produto, quantidade, frete_id, endereco, tempo_previsto, valor_compra)
-    # compra = Compra.objects.create(
-    #     usuario=usuario,
-    #     forma_pag = forma_pag,
-    #     produto = produto,
-    #     # quantidade
-    #     frete_id = frete_id,
-    #     endereco = endereco,
-    #     tempo_previsto,
-    #     valor_compra,
-    # )
-    # compra.save()
+    compra = Compra.objects.create(
+         usuario=usuario,
+         forma_pag=forma_pag,
+         produto=produto,
+         quantidade=quantidade,
+         frete_id=frete_id,
+         endereco=endereco,
+         tempo_previsto=tempo_previsto,
+         valor_compra=valor_compra,
+    )
+    compra.save()
     return render(request,'produtos/pos_pagamento.html')
