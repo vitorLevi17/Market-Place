@@ -59,6 +59,7 @@ def compra(request,produto):
     total = preco
     form = CompraForm(request.POST)
     cep = form['cep'].value()
+    complemento = form['complemento'].value()
     if not form.is_valid():
         messages.error(request,'A quantidade deve ser maior ou igual a 1')
     elif valida_cep(cep) != True:
@@ -82,7 +83,7 @@ def compra(request,produto):
         request.session['quantidade'] = int(quantidade)
         request.session['frete_id'] = frete_id
         request.session['cep'] = cep
-        print(id,total,nome)
+        request.session['complemento'] = complemento
         link = pagar(id,nome,total)
         return redirect(link)
 
@@ -93,13 +94,14 @@ def compra(request,produto):
 def pos_pagamento(request):
     usuario=request.user
     cep = request.session.get('cep')
+    complemento = request.session.get('complemento')
     tipo_pagamento = request.GET.get('payment_type')
     id_forma_pag = forma_Pagamento(tipo_pagamento)
     forma_pag = FormaPag.objects.get(id=id_forma_pag)
     produto = request.session.get('produto_id')
     quantidade = request.session.get("quantidade")
     frete_id = request.session.get('frete_id')
-    endereco = cep
+    endereco = f'{cep} - {complemento}'
     tempo_previsto = requisitarFreteTempo(cep,frete_id)
     valor_compra = request.session.get('total')
     compra = Compra.objects.create(

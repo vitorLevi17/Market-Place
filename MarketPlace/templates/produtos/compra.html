@@ -23,6 +23,8 @@
             <label for="cep">CEP:</label>
             <input type="text" id="cep" name="cep" required value="{{ form.cep.value|default_if_none:'' }}">
 
+            <label for="complemento">Complemento:</label>
+            <input type="text" id="complemento" name="complemento" required value="{{ form.complemento.value|default_if_none:'' }}">
             {% if messages %}
                 <div class="error-message">
                     {% for message in messages %}

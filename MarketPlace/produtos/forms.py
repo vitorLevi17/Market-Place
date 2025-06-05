@@ -22,3 +22,13 @@ class CompraForm(forms.Form):
             }
         )
     )
+    complemento = forms.CharField(
+        label="complemento",
+        required=True,
+        max_length=225,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Ex. Edificio apt 101 em frente ao Subway"
+            }
+        )
+    )
