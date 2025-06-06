@@ -50,7 +50,7 @@ def desfavoritar(request,produto):
         messages.error(request,"Você não adicionou o item aos favoritos")
     return render(request,"produtos/produto.html",{'context':response})
 
-#@login_required(login_url='/entrar/')
+@login_required(login_url='/entrar/')
 def compra(request,produto):
     response = requisitarProduto(produto)
     preco = Decimal(str(response['preco']))
