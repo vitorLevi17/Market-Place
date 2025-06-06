@@ -49,8 +49,8 @@ def desfavoritar(request,produto):
     except Favoritos.DoesNotExist:
         messages.error(request,"Você não adicionou o item aos favoritos")
     return render(request,"produtos/produto.html",{'context':response})
+
 #@login_required(login_url='/entrar/')
-#Adicionar complemento
 def compra(request,produto):
     response = requisitarProduto(produto)
     preco = Decimal(str(response['preco']))
@@ -116,3 +116,17 @@ def pos_pagamento(request):
     )
     compra.save()
     return render(request,'produtos/pos_pagamento.html')
+
+@login_required(login_url='/entrar/')
+def compras(request):
+    usuario = request.user
+    usuario_compras = Compra.objects.filter(usuario=usuario)
+    lista_compras = []
+    for compra in usuario_compras:
+        response = requisitarProduto(compra.produto)
+        lista_compras.append({
+            'compra':compra,
+            'produto':response
+        })
+    print(lista_compras)
+    return render(request,'produtos/compras.html',{'context':lista_compras})

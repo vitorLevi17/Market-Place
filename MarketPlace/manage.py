@@ -2,13 +2,12 @@
 import os
 import sys
 
-#-Tela de compra(confirmar endereço, if request.user == true mnter info de endereço)
+#-compra(if request.user == true)
 #Retirar um botão em COMPRA.HTML
 #4- pix
 #filtros - nome - autor - preco
 #3- usuarios(email, esqueceu a senha)
 #2- carregar as imgs
-
 
 def main():
     """Run administrative tasks."""

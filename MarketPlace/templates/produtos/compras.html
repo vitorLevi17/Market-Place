@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Compras</h1>
+{% if context %}
+    {% for conte in context %}
+        <p>Nome: {{ conte.produto.Nome }}</p>
+        <p>Autor: {{ conte.produto.autor }}</p>
+        <p>Preço: {{ conte.produto.preco }}</p>
+        <p>Forma de pagamento: {{ conte.compra.forma_pag }}</p>
+        <p>Data da compra: {{ conte.compra.data }}</p>
+        <p>Quantidade: {{ conte.compra.quantidade }}</p>
+        <p>Endereço: {{ conte.compra.endereco }}</p>
+        <p>Tempo previsto: {{ conte.compra.tempo_previsto }}</p>
+        <p>Tempo chegada: {{ conte.compra.tempo_chegada }}</p>
+        <p>Valor da compra: {{ conte.compra.valor_compra }}</p>
+        <p>Status: {{ conte.compra.status }}</p>
+        <img src="https://apimarketplace24022025.s3.sa-east-1.amazonaws.com/uploads/programacao-scaled.jpg" alt="Imagem do Produto">
+    {% endfor %}
+    {% else %}
+    <p>Nenhum produto comprado.</p>
+{% endif %}
+</body>
+</html>
