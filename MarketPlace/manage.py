@@ -2,7 +2,6 @@
 import os
 import sys
 
-#Reduzir estoque view pos_compra
 #Retirar um botão em COMPRA.HTML
 #4- pix
 #filtros - nome - autor - preco
