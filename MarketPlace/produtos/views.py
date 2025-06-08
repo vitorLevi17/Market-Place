@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import CompraForm
 from sistema.validators import valida_cep
-from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId,requisitarFreteTempo,reduzirEstoque
+from sistema.requestsAux import requisitarFretes, requisitarProduto, requisitarProdutoCategoria, requisitarFreteId, \
+    requisitarFreteTempo, reduzirEstoque, conferirEstoque
 from .compra import pagar,forma_Pagamento
 load_dotenv()
 def produto(request,produto):
@@ -61,32 +62,33 @@ def compra(request,produto):
     complemento = form['complemento'].value()
     if not form.is_valid():
         messages.error(request,'A quantidade deve ser maior ou igual a 1')
-    #elif conferirEstoque(produto, quantidade) == 400:
-    #    messages.error(request, 'Estoque insuficiente, diminua a quantidade de produtos')
     elif valida_cep(cep) != True:
         messages.error(request, 'CEP inválido')
     else:
         quantidade = Decimal(form.cleaned_data["quantidade"])
-        fretes = requisitarFretes(cep)
-        for frete in fretes:
-            if "error" not in frete:
-                lista_Fretes.append(frete)
-                total = preco * quantidade
+        if conferirEstoque(produto, quantidade) == 400:
+            messages.error(request, 'Estoque insuficiente, diminua a quantidade de produtos')
+        else:
+            fretes = requisitarFretes(cep)
+            for frete in fretes:
+                if "error" not in frete:
+                    lista_Fretes.append(frete)
+                    total = preco * quantidade
 
-    frete_id = request.POST.get('frete_id')
-    if frete_id:
-        frete = requisitarFreteId(cep,frete_id)
-        total += frete
-        id = response['id']
-        nome = response['Nome']
-        request.session['produto_id'] = response['id']
-        request.session['total'] = float(total)
-        request.session['quantidade'] = int(quantidade)
-        request.session['frete_id'] = frete_id
-        request.session['cep'] = cep
-        request.session['complemento'] = complemento
-        link = pagar(id,nome,total)
-        return redirect(link)
+            frete_id = request.POST.get('frete_id')
+            if frete_id:
+                frete = requisitarFreteId(cep,frete_id)
+                total += frete
+                id = response['id']
+                nome = response['Nome']
+                request.session['produto_id'] = response['id']
+                request.session['total'] = float(total)
+                request.session['quantidade'] = int(quantidade)
+                request.session['frete_id'] = frete_id
+                request.session['cep'] = cep
+                request.session['complemento'] = complemento
+                link = pagar(id,nome,total)
+                return redirect(link)
 
     return render(request,"produtos/compra.html",{'context': response,
                                                   'form': form ,

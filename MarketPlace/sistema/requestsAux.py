@@ -2,7 +2,20 @@ from decimal import Decimal
 from dotenv import load_dotenv
 import os
 import requests
+from django.contrib import messages
 load_dotenv()
+def conferirEstoque(produto,quantidade_pedida):
+    url = 'http://127.0.0.1:5000/Produto/' + str(produto) + '/'
+    token = os.getenv('TOKEN')
+    headers = {
+        'Authorization': f'Token {token}',
+        'Content-Type': 'application/json'
+    }
+    resposta = requests.get(url, headers=headers)
+    data = resposta.json()
+    quantidade_disponivel = data.get('quantidade', 0)
+    if quantidade_disponivel <= quantidade_pedida:
+        return 400
 def reduzirEstoque(produto ,quantidade_pedida):
     url = 'http://127.0.0.1:5000/Produto/'+ str(produto)+'/'
     token = os.getenv('TOKEN')
