@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import CompraForm
 from sistema.validators import valida_cep
-from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId,requisitarFreteTempo
+from sistema.requestsAux import requisitarFretes,requisitarProduto,requisitarProdutoCategoria,requisitarFreteId,requisitarFreteTempo,reduzirEstoque
 from .compra import pagar,forma_Pagamento
 load_dotenv()
 def produto(request,produto):
@@ -49,7 +49,6 @@ def desfavoritar(request,produto):
     except Favoritos.DoesNotExist:
         messages.error(request,"Você não adicionou o item aos favoritos")
     return render(request,"produtos/produto.html",{'context':response})
-
 @login_required(login_url='/entrar/')
 def compra(request,produto):
     response = requisitarProduto(produto)
@@ -62,6 +61,8 @@ def compra(request,produto):
     complemento = form['complemento'].value()
     if not form.is_valid():
         messages.error(request,'A quantidade deve ser maior ou igual a 1')
+    #elif conferirEstoque(produto, quantidade) == 400:
+    #    messages.error(request, 'Estoque insuficiente, diminua a quantidade de produtos')
     elif valida_cep(cep) != True:
         messages.error(request, 'CEP inválido')
     else:
@@ -99,9 +100,9 @@ def pos_pagamento(request):
     id_forma_pag = forma_Pagamento(tipo_pagamento)
     forma_pag = FormaPag.objects.get(id=id_forma_pag)
     produto = request.session.get('produto_id')
-    quantidade = request.session.get("quantidade")
+    quantidade = request.session.get('quantidade')
     frete_id = request.session.get('frete_id')
-    endereco = f'{cep} - {complemento}'
+    endereco = f'{cep} + {complemento}'
     tempo_previsto = requisitarFreteTempo(cep,frete_id)
     valor_compra = request.session.get('total')
     compra = Compra.objects.create(
@@ -114,9 +115,10 @@ def pos_pagamento(request):
          tempo_previsto=tempo_previsto,
          valor_compra=valor_compra,
     )
+
+    reduzirEstoque(produto, quantidade)
     compra.save()
     return render(request,'produtos/pos_pagamento.html')
-
 @login_required(login_url='/entrar/')
 def compras(request):
     usuario = request.user
@@ -128,5 +130,4 @@ def compras(request):
             'compra':compra,
             'produto':response
         })
-    print(lista_compras)
     return render(request,'produtos/compras.html',{'context':lista_compras})

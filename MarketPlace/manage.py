@@ -2,7 +2,7 @@
 import os
 import sys
 
-#-compra(if request.user == true)
+#Reduzir estoque view pos_compra
 #Retirar um botão em COMPRA.HTML
 #4- pix
 #filtros - nome - autor - preco

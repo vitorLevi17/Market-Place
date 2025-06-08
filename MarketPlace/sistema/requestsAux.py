@@ -3,20 +3,25 @@ from dotenv import load_dotenv
 import os
 import requests
 load_dotenv()
+def reduzirEstoque(produto ,quantidade_pedida):
+    url = 'http://127.0.0.1:5000/Produto/'+ str(produto)+'/'
+    token = os.getenv('TOKEN')
+    headers = {
+        'Authorization': f'Token {token}',
+        'Content-Type': 'application/json'
+    }
+    resposta = requests.get(url, headers=headers)
+    data = resposta.json()
+    preco = data.get('preco', 0)
+    quantidade_disponivel = data.get('quantidade', 0)
+    nova_quantidade = quantidade_disponivel - quantidade_pedida
 
-# def reduzirEstoque(produto ,preco, quantidade):
-#     url = 'http://127.0.0.1:5000/Produto/' + str(produto)
-#     token = os.getenv('TOKEN')
-#     body = {
-#         "preco": preco,
-#         "quantidade": quantidade
-#     }
-#     headers = {
-#         'Authorization': f'Token {token}',
-#         'Content-Type': 'application/json'
-#     }
-#     response = requests.get(url,headers).json()
-#     print(response['quantidade'])
+    request_patch = {
+        'preco': preco,
+        'quantidade': nova_quantidade
+    }
+    resposta = requests.patch(url, json=request_patch, headers=headers)
+    return print(resposta)
 def requisitarProduto(produto):
     url = 'http://127.0.0.1:5000/Produto/' + str(produto)
     token = os.getenv('TOKEN')

@@ -21,31 +21,6 @@ def index(request):
     resposta_json = resposta.json()
     #'http://127.0.0.1:8000/Produto/?search=Book 2'
     return render(request,'sistema/index.html',{'context':resposta_json})
-def teste(request):
-    url = 'http://127.0.0.1:5000/Produto/15/'
-    token = os.getenv('TOKEN')
-    headers = {
-        'Authorization': f'Token {token}',
-        'Content-Type': 'application/json'
-    }
-
-    resposta = requests.get(url,headers=headers)
-
-    data = resposta.json()
-    preco = data.get('preco',0)
-    quantidade = data.get('quantidade',0)
-    quantidade_vendida = 3
-    nova_quantidade = quantidade-quantidade_vendida
-    request_patch = {
-        'preco': preco,
-        'quantidade': nova_quantidade
-    }
-
-    resposta = requests.patch(url,json=request_patch,headers=headers)
-    if resposta.status_code == 200:
-        print("Tudo certo na Bahia")
-
-    return render(request,'sistema/teste.html',{'resposta':resposta.json()})
 def entrar(request):
     login = LoginForm()
 
@@ -73,7 +48,6 @@ def entrar(request):
         else:
             messages.error(request,"Email invalido")
     return render(request,'sistema/entrar.html',{'login':login})
-
 def cadastro(request):
     form = UsuarioForm()
     cpfvalidador = CPF()
@@ -132,12 +106,10 @@ def cadastro(request):
             return redirect('cadastro')
 
     return render(request,'sistema/cadastro.html',{'form':form})
-
 def logout(request):
     auth.logout(request)
     messages.success(request,"Logout feito")
     return redirect('entrar')
-
 def receber_email(request):
     form = ReceberEmailForm(request.POST)
     email = form['email'].value()
@@ -152,7 +124,6 @@ def receber_email(request):
     else:
         messages.success(request, 'Tudo errado')
     return render(request,'sistema/receber_email.html',{'form':form})
-
 def mudar_senha(request,id):
     form = MudarSenhaForm(request.POST)
     senha = form['senha'].value()
