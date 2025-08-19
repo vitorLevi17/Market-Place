@@ -17,7 +17,7 @@
     <a href="{% url 'favoritos' context.id %}">Favoritar</a>
     <a href="{% url 'desfavoritar' context.id %}">Remover dos favoritos</a>
 {% endif %}
-    <a href="{% url 'compra' context.id %}">Comprar</a>
+    <a href="{% url 'calcula_total' context.id %}">Comprar</a>
     {% if messages %}
                 <div class="error-message">
                     {% for message in messages %}

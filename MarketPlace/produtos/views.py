@@ -51,14 +51,15 @@ def desfavoritar(request,produto):
         messages.error(request,"Você não adicionou o item aos favoritos")
     return render(request,"produtos/produto.html",{'context':response})
 @login_required(login_url='/entrar/')
-def compra(request,produto):
-    response = requisitarProduto(produto)
-    preco = Decimal(str(response['preco']))
+def calcula_total(request,produto):
+
+    response = requisitarProduto(produto) #get do produto
+    preco = Decimal(str(response['preco'])) #transformar o preco em decimal
     quantidade = 1
     lista_Fretes = []
     total = preco
-    form = CompraForm(request.POST)
-    cep = form['cep'].value()
+    form = CompraForm(request.POST) #formulario do django
+    cep = form['cep'].value() #pegar variaveis
     complemento = form['complemento'].value()
     if not form.is_valid():
         messages.error(request,'A quantidade deve ser maior ou igual a 1')
@@ -75,25 +76,23 @@ def compra(request,produto):
                     lista_Fretes.append(frete)
                     total = preco * quantidade
 
-            frete_id = request.POST.get('frete_id')
+                frete_id = request.POST.get('frete_id')
             if frete_id:
                 frete = requisitarFreteId(cep,frete_id)
                 total += frete
-                id = response['id']
-                nome = response['Nome']
-                request.session['produto_id'] = response['id']
-                request.session['total'] = float(total)
-                request.session['quantidade'] = int(quantidade)
-                request.session['frete_id'] = frete_id
-                request.session['cep'] = cep
-                request.session['complemento'] = complemento
-                link = pagar(id,nome,total)
-                return redirect(link)
+                return seguir_pagamento(request,produto,response['Nome'],total)
+                #return redirect(link)
 
-    return render(request,"produtos/compra.html",{'context': response,
+
+    return render(request,"produtos/calcula_total.html",{'context': response,
                                                   'form': form ,
                                                   'fretes': lista_Fretes,
                                                   'total':total})
+
+def seguir_pagamento(request,id,nome,total):
+    response = requisitarProduto(id)
+    link = pagar(id, nome, total)
+    return redirect(link)
 def pos_pagamento(request):
     usuario=request.user
     cep = request.session.get('cep')

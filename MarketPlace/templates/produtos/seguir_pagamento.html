@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {%if response %}
+        <p>Id: {{ response.id }}</p>
+        <p>Nome: {{ response.Nome }}</p>
+        <p>Autor: {{ response.autor }}</p>
+        <p>Quantidade: {{ response.quantidade }}</p>
+        <p>Preço: <span id="preco_produto">{{ response.preco }}</span></p>
+        <p>Descrição: {{ response.descricao }}</p>
+        <img src="{{ response.imagem }}" alt="Imagem do Produto">
+    {% endif %}
+</body>
+</html>

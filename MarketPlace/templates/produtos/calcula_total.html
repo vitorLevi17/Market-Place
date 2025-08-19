@@ -15,7 +15,7 @@
     <p>Descrição: {{ context.descricao }}</p>
     <img src="{{ context.imagem }}" alt="Imagem do Produto">
 {% endif %}
-    <form action="{% url 'compra' context.id %}" method="post">
+    <form action="{% url 'calcula_total' context.id %}" method="post">
         {% csrf_token %}
             <label for="quantidade">Quantidade:</label>
             <input type="number" id="quantidade" name="quantidade" required value="{{ form.quantidade.value|default_if_none:'' }}">
