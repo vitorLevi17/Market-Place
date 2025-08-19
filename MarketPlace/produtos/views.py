@@ -53,13 +53,13 @@ def desfavoritar(request,produto):
 @login_required(login_url='/entrar/')
 def calcula_total(request,produto):
 
-    response = requisitarProduto(produto) #get do produto
-    preco = Decimal(str(response['preco'])) #transformar o preco em decimal
+    response = requisitarProduto(produto)
+    preco = Decimal(str(response['preco']))
     quantidade = 1
     lista_Fretes = []
     total = preco
-    form = CompraForm(request.POST) #formulario do django
-    cep = form['cep'].value() #pegar variaveis
+    form = CompraForm(request.POST)
+    cep = form['cep'].value()
     complemento = form['complemento'].value()
     if not form.is_valid():
         messages.error(request,'A quantidade deve ser maior ou igual a 1')
@@ -81,7 +81,7 @@ def calcula_total(request,produto):
                 frete = requisitarFreteId(cep,frete_id)
                 total += frete
                 return seguir_pagamento(request,produto,response['Nome'],total)
-                #return redirect(link)
+
 
 
     return render(request,"produtos/calcula_total.html",{'context': response,
