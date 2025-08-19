@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="30f80d1c-4787-4809-9c73-6a14e5b3d03d" name="Changes" comment="" />
+    <list default="true" id="30f80d1c-4787-4809-9c73-6a14e5b3d03d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MarketPlace/setup/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MarketPlace/setup/settings.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +26,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Vitor Levi/OneDrive/Documentos/Market-Place/MarketPlace"
+    "last_opened_file_path": "C:/Users/VitorLevi/OneDrive/Documentos/Market-Place/MarketPlace"
   }
 }]]></component>
   <component name="SharedIndexes">
